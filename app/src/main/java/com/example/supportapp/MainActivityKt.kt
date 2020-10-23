@@ -1,0 +1,11 @@
+package com.example.supportapp
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
+class MainActivityKt : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main_kt)
+    }
+}

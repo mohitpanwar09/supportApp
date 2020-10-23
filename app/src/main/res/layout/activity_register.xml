@@ -6,21 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/register_background"
-    tools:context=".registerActivity.RegisterActivity">
+    tools:context=".registerActivity.RegisterActivity"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="vertical"
-        android:background="@color/yellow">
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginTop="-5dp"
-        app:srcCompat="@drawable/ic_wave"/>
     
     <TextView
         android:layout_width="match_parent"
@@ -72,11 +60,21 @@
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:text="@string/Register"
-        android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:background="@drawable/register_button"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"/>
+
+    <ProgressBar
+        android:id="@+id/register_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"/>
+
+
 
 
 </LinearLayout>
