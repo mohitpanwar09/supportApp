@@ -83,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         mAlertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
+                Intent intent=new Intent(MainActivity.this,RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });

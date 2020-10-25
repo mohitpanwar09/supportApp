@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/my_Profile"
+        android:id="@+id/_myProfile"/>
+
+    <item android:title="@string/review">
+        <menu>
+            <item
+                android:id="@+id/_family"
+                android:title="@string/family"/>
+            <item
+                android:id="@+id/_friends"
+                android:title="@string/friends"/>
+            <item
+                android:id="@+id/_relationships"
+                android:title="@string/relationships"/>
+            <item
+                android:id="@+id/_single_hood"
+                android:title="@string/singlehood"/>
+            <item
+                android:id="@+id/_solo_trip_experiences"
+                android:title="@string/solo_trip"/>
+            <item
+                android:title="@string/customer"
+                android:id="@+id/_customer_service"/>
+            <item
+                android:title="@string/indianRelative"
+                android:id="@+id/_Indian_relatives"/>
+            <item
+                android:title="@string/foodOutlet"
+                android:id="@+id/_food_outlets"/>
+            <item
+                android:title="@string/jobe"
+                android:id="@+id/_Jobs"/>
+        </menu>
+    </item>
+    <item
+        android:title="@string/about"
+        android:id="@+id/_about"/>
+    <item
+        android:title="@string/logout"
+        android:id="@+id/_logout"/>
+
+</menu>

@@ -1,6 +1,25 @@
 <resources>
-    <string name="app_name">SupportApp</string>
+    <string name="app_name">Bhadaas</string>
     <string name="Email">Email</string>
     <string name="Name">Name</string>
     <string name="Register">Register</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    //// menu ////////
+    <string name="my_Profile">My Profile</string>
+    <string name="friends">Friends</string>
+    <string name="family">Family</string>
+    <string name="relationships">Relationships</string>
+    <string name="singlehood">Singlehood</string>
+    <string name="solo_trip">Solo trip experiences</string>
+    <string name="customer">Customer service</string>
+    <string name="indianRelative">Indian relatives</string>
+    <string name="foodOutlet">Food outlets</string>
+    <string name="jobe">Jobs</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+    <string name="review">Review on</string>
+
+
 </resources>
