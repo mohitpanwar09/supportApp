@@ -10,6 +10,6 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/yellow"
-        app:titleTextColor="@color/white"/>
+        app:titleTextColor="@color/black"/>
 
 </FrameLayout>

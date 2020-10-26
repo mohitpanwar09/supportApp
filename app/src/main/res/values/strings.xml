@@ -21,5 +21,8 @@
     <string name="logout">Logout</string>
     <string name="review">Review on</string>
 
+    ///// post /////
+    <string name="postHint">what you think?</string>
+    <string name="postAddImage">Add Image</string>
 
 </resources>

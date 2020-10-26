@@ -1,19 +1,31 @@
 package com.example.supportapp
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.system.Os.close
 import android.system.Os.open
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main_kt.*
+import java.util.*
 
 class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private val readImage=569
+    private var postUrl: String? =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_kt)
@@ -29,6 +41,50 @@ class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
+        main_post_addImage.setOnClickListener {
+            checkForPermission()
+        }
+
+        main_post_send.setOnClickListener {
+
+        }
+
+
+    }
+
+    private fun fetchFromGalary(){
+        val intent=Intent(Intent.ACTION_PICK)
+        intent.type="image/*"
+        startActivityForResult(intent,0)
+    }
+    private var selectedImgUri: Uri?=null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+            if(requestCode==0 && resultCode==Activity.RESULT_OK && data!=null){
+                    toast("Photo selected")
+                    selectedImgUri=data.data
+                val bitmap= MediaStore.Images.Media.getBitmap(contentResolver,selectedImgUri)
+                main_post_addImage.setImageBitmap(bitmap)
+
+                storeToFirebase()
+            }else{
+                toast("Enable to select image")
+            }
+    }
+
+    private fun storeToFirebase(){
+            if(selectedImgUri==null) return
+        val fileName=FirebaseAuth.getInstance().uid.toString()+UUID.randomUUID().toString()
+        val ref=FirebaseStorage.getInstance().getReference("/image/$fileName")
+                ref.putFile(selectedImgUri!!)
+                        .addOnSuccessListener {
+                                toast("stored to firebase")
+                            ref.downloadUrl.addOnSuccessListener {
+                                postUrl=it.toString()
+                            }
+                        }
 
     }
 
@@ -108,4 +164,38 @@ class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             super.onBackPressed()
         }
     }
+
+
+    private fun checkForPermission(){
+            if(Build.VERSION.SDK_INT>=23){
+                if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)!=
+                        PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),readImage)
+                    return
+                }
+                fetchFromGalary()
+            }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        when(requestCode){
+            readImage->{
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    fetchFromGalary()
+                }else{
+                    Toast.makeText(this, "PERMISSION IS NOT GRANTED", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else->super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun toast(message:String){
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+    }
+
 }

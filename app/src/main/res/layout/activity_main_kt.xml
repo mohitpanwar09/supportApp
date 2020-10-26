@@ -7,12 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivityKt"
-    android:background="@color/white"
+    android:background="#474444"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +22,68 @@
             layout="@layout/custom_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/post_post"
+                android:layout_margin="8dp">
+
+
+                <EditText
+                    android:id="@+id/main_kt_post_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/postHint"
+                    android:inputType="textMultiLine"
+                    android:padding="14dp"
+                    android:textSize="21sp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/postAddImage"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:layout_marginStart="18dp"
+                        android:layout_gravity="center"/>
+                    <ImageView
+                        android:id="@+id/main_post_addImage"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:srcCompat="@drawable/addbut"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="visible"/>
+
+                </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/main_post_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_baseline_send_24"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="16dp"
+                        android:layout_gravity="end"
+                        android:padding="2dp"/>
+
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
@@ -31,8 +94,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:clipToPadding="false"
-        app:menu="@menu/main_menu"
-        />
+        app:menu="@menu/main_menu"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
