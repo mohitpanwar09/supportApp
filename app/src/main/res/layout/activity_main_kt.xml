@@ -30,9 +30,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/post_make_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/post_post"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone">
 
 
                 <EditText
@@ -67,8 +75,26 @@
                         app:srcCompat="@drawable/addbut"
                         android:layout_marginLeft="10dp"
                         android:visibility="visible"/>
+                    <ProgressBar
+                        android:id="@+id/main_post_progress"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="25dp"
+                        android:visibility="gone"
+                        android:progressTint="@color/white"
+                        />
 
                 </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/main_post_progress2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:visibility="gone"
+                    android:progressTint="@color/white"
+                    android:layout_gravity="center"
+                    />
 
                     <ImageView
                         android:id="@+id/main_post_send"
@@ -80,6 +106,16 @@
                         android:layout_gravity="end"
                         android:padding="2dp"/>
 
+
+            </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/post_recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />
 
             </LinearLayout>
 

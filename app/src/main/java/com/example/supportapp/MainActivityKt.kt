@@ -10,15 +10,28 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.system.Os.close
 import android.system.Os.open
+import android.util.Log
+import android.view.Display
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
+import com.example.supportapp.ktClass.AddUser
+import com.example.supportapp.ktClass.DisplayPost
+import com.example.supportapp.ktClass.PostDetailStr
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_main_kt.*
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import java.util.*
 
 class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -47,10 +60,20 @@ class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
 
         main_post_send.setOnClickListener {
+            if (main_kt_post_des==null && postUrl==null){
+                main_kt_post_des.error="Please Write somthing or add image"
+                main_kt_post_des.requestFocus()
+                return@setOnClickListener
+            }
+            makeAPost()
+        }
 
+        toolbar_make_post_bt.setOnClickListener {
+                post_make_post.visibility= View.VISIBLE
         }
 
 
+        displayAllPost()
     }
 
     private fun fetchFromGalary(){
@@ -75,6 +98,7 @@ class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     private fun storeToFirebase(){
+        main_post_progress.visibility=View.VISIBLE
             if(selectedImgUri==null) return
         val fileName=FirebaseAuth.getInstance().uid.toString()+UUID.randomUUID().toString()
         val ref=FirebaseStorage.getInstance().getReference("/image/$fileName")
@@ -83,9 +107,74 @@ class MainActivityKt : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                                 toast("stored to firebase")
                             ref.downloadUrl.addOnSuccessListener {
                                 postUrl=it.toString()
+                                main_post_progress.visibility=View.GONE
                             }
+                                    .addOnFailureListener{
+                                        main_post_progress.visibility=View.GONE
+                                        toast("Please Reselect Image")
+                                    }
+
+
+
                         }
 
+    }
+
+    private fun displayAllPost(){
+        val ref=FirebaseDatabase.getInstance().getReference("/post")
+            ref.addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val adapter=GroupAdapter<GroupieViewHolder>()
+                    snapshot.children.forEach {
+                            val postD=it.getValue(PostDetailStr()::class.java)
+                        if(postD!=null){
+                                adapter.add(DisplayPost(postD))
+                        }
+                    }
+                    post_recycleView.adapter=adapter
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+    private fun makeAPost(){
+        main_post_progress2.visibility=View.VISIBLE
+        val postId=UUID.randomUUID().toString()
+        val uid=FirebaseAuth.getInstance().uid.toString()
+        val postDes=main_kt_post_des.text.toString()
+        var namePost:String?=null
+        FirebaseDatabase.getInstance().getReference("User")
+                .addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.children.forEach {its->
+                            if(its.key.toString()==uid){
+                                val userN=its.getValue(AddUser()::class.java)
+                                namePost=userN!!.name
+                                Log.d("main",namePost.toString())
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+        val postDetails=PostDetailStr(uid,namePost.toString(),postDes,postUrl.toString(),120)
+
+        FirebaseDatabase.getInstance().getReference("post").child(postId)
+                .setValue(postDetails)
+                .addOnSuccessListener {
+                    toast("You made a post")
+                    main_kt_post_des.text.clear()
+                    main_post_addImage.setImageResource(R.drawable.addbut)
+                    main_post_progress2.visibility=View.GONE
+                    post_make_post.visibility=View.GONE
+                }
     }
 
     override fun onStart() {

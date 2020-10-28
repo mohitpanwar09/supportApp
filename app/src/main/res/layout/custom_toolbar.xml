@@ -10,6 +10,15 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/yellow"
-        app:titleTextColor="@color/black"/>
+        app:titleTextColor="@color/black"
+        />
+    <ImageView
+        android:id="@+id/toolbar_make_post_bt"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/send_make_post"
+        android:layout_gravity="end"
+        android:layout_margin="12dp"
+        />
 
 </FrameLayout>
